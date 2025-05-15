@@ -1,0 +1,77 @@
+.restaurant-home-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(2, 1fr);
+  gap: 20px;
+  height: 100vh;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background: #f9f9f9;
+}
+
+.menu-section, .profile-section, .orders-section, .image-upload-section {
+  background: white;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow-y: auto;
+}
+
+.menu-section {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+}
+
+.profile-section {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+}
+
+.orders-section {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+}
+
+.image-upload-section {
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+  text-align: center;
+}
+
+.menu-item, .order-item {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.menu-item:last-child, .order-item:last-child {
+  border-bottom: none;
+}
+
+.add-item-btn, .update-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.add-item-btn:hover, .update-btn:hover {
+  background-color: #0056b3;
+}
+
+.profile-form input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.loading {
+  font-size: 18px;
+  text-align: center;
+  margin-top: 50px;
+}
