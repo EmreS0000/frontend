@@ -15,53 +15,51 @@ const RestaurantHome = () => {
     password: '',
   });
 
- useEffect(() => {
-  const fetchData = async () => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      navigate('/restaurant-login');
-      return;
-    }
-
-    try {
-      const profileRes = await axios.get('http://localhost:8082/api/restaurants/profile', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-
-      const restaurantData = profileRes.data;
-      setRestaurant(restaurantData);
-      setFormData({
-        email: restaurantData.email || '',
-        phone: restaurantData.phone || '',
-        address: restaurantData.address || '',
-        password: '',
-      });
-
-      const itemsRes = await axios.get(`http://localhost:8082/api/menus/restaurant/${restaurantData.id}/items`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setItems(itemsRes.data);
-
-      const ordersRes = await axios.get('http://localhost:8082/api/orders/getAllOrders', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setOrders(ordersRes.data);
-      
-    } catch (err) {
-      console.error('API hatası:', err);
-
-      if (err.response && (err.response.status === 401 || err.response.status === 403)) {
-        navigate('/restaurant-login');
-      } else {
-        // başka bir hata (örneğin sunucu yok, ağ hatası vs)
-        alert("Sunucuya bağlanılamıyor. Lütfen tekrar deneyin.");
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        // navigate('/restaurant-login');
+        return;
       }
-    }
-  };
 
-  fetchData();
-}, [navigate]);
+      try {
+        const profileRes = await axios.get('http://localhost:8082/api/restaurants/profile', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
 
+        const restaurantData = profileRes.data;
+        setRestaurant(restaurantData);
+        setFormData({
+          email: restaurantData.email || '',
+          phone: restaurantData.phone || '',
+          address: restaurantData.address || '',
+          password: '',
+        });
+
+        const itemsRes = await axios.get(`http://localhost:8082/api/menus/restaurant/${restaurantData.id}/items`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setItems(itemsRes.data);
+
+        const ordersRes = await axios.get('http://localhost:8082/api/orders/getAllOrders', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setOrders(ordersRes.data);
+
+      } catch (err) {
+        console.error('API hatası:', err);
+
+        if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+          // navigate('/restaurant-login');
+        } else {
+          alert("Sunucuya bağlanılamıyor. Lütfen tekrar deneyin.");
+        }
+      }
+    };
+
+    fetchData();
+  }, [navigate]);
 
   const handleProfileChange = (e) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -119,7 +117,7 @@ const RestaurantHome = () => {
         ) : (
           orders.map((order, index) => (
             <div key={index} className="order-item">
-              <strong>{order.customer}</strong>: {order.items.join(', ')} - ₺{order.total}
+              <strong>{order.user?.email || "Bilinmeyen Müşteri"}</strong>: {order.ordersList?.map(item => item.productName).join(', ')} - ₺{order.totalPrice}
             </div>
           ))
         )}
